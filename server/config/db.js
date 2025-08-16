@@ -1,12 +1,21 @@
-import mongoose from "mongoose";
+import { MongoClient } from "mongodb";
+
+let client;
+let db;
 
 const connectDB = async () => {
-    try {
-        mongoose.connection.on('connected', () => console.log("Database Connected"));
-        await mongoose.connect(`${process.env.MONGODB_URL}/hotel-booking`)
-    } catch (error){
-        console.log(error.message)
+  try {
+    if (!client) {
+      client = new MongoClient(`${process.env.MONGODB_URL}/hotel-booking`);
+      await client.connect();
+      db = client.db(); // defaults to "hotel-booking"
+      console.log("Database Connected");
     }
-}
+    return db;
+  } catch (error) {
+    console.error("MongoDB Connection Error:", error.message);
+    throw error;
+  }
+};
 
 export default connectDB;
