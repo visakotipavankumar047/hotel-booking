@@ -1,4 +1,4 @@
-import mongodb from 'mongoose';
+import mongodb from 'mongodb';
 
 const userSchema = mongodb.Schema({
     _id: {type: String, required: true},
